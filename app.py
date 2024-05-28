@@ -71,7 +71,7 @@ def generate_nik():
     return next_nik
 
 #fungsi untuk menyimpan lokasi foto
-UPLOAD_FOLDER = '/web_pegawai/crud/static/foto/'
+UPLOAD_FOLDER = 'crud/static/foto/'
 application.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 #fungsi view tambah() untuk membuat form tambah data
@@ -125,7 +125,7 @@ def edit(nik):
         gaji = request.form['gaji']
         foto = request.form['nik']
 
-        path_to_photo = os.path.join(application.root_path, '/web_pegawai/crud/static/foto', f'{nik}.jpg')
+        path_to_photo = os.path.join(application.root_path, 'crud/static/foto', f'{nik}.jpg')
         if os.path.exists(path_to_photo):
             os.remove(path_to_photo)
 
@@ -154,7 +154,7 @@ def hapus(nik):
     openDb()
     cursor.execute('DELETE FROM pegawai WHERE nik=%s', (nik,))
     # Hapus foto berdasarkan NIK
-    path_to_photo = os.path.join(application.root_path, '/web_pegawai/crud/static/foto', f'{nik}.jpg')
+    path_to_photo = os.path.join(application.root_path, 'crud/static/foto', f'{nik}.jpg')
     if os.path.exists(path_to_photo):
         os.remove(path_to_photo)
 
