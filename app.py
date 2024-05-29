@@ -32,7 +32,7 @@ def index():
     for data in results:
         container.append(data)
     closeDb()
-    return render_template('index.html', container=container,)
+    return render_template('index.html', container=container)
 
 
 #fungsi membuat NIK otomatis
@@ -125,7 +125,7 @@ def edit(nik):
         gaji = request.form['gaji']
         foto = request.form['nik']
 
-        path_to_photo = os.path.join(application.root_path, 'crud/static/foto', f'{nik}.jpg')
+        path_to_photo = os.path.join(application.root_path, 'foto', f'{nik}.jpg')
         if os.path.exists(path_to_photo):
             os.remove(path_to_photo)
 
@@ -154,7 +154,7 @@ def hapus(nik):
     openDb()
     cursor.execute('DELETE FROM pegawai WHERE nik=%s', (nik,))
     # Hapus foto berdasarkan NIK
-    path_to_photo = os.path.join(application.root_path, 'crud/static/foto', f'{nik}.jpg')
+    path_to_photo = os.path.join(application.root_path, 'crud/static/foto/', f'{nik}.jpg')
     if os.path.exists(path_to_photo):
         os.remove(path_to_photo)
 
