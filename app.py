@@ -37,37 +37,26 @@ def index():
 
 #fungsi membuat NIK otomatis
 def generate_nik():
-    # mendefinisikan fungsi openDb(), cursor, dan closeDb() 
+    #mengambil koneksi database
     openDb()
-
-    current_year = datetime.datetime.now().year
-    current_month = datetime.datetime.now().month
     
-    # Mengambil empat digit terakhir dari tahun
-    year_str = str(current_year).zfill(2)
-    
-    # Mengambil dua digit dari bulan
-    current_month_str = str(current_month).zfill(2)
-
-    # Membuat format NIK tanpa nomor urut terlebih dahulu
-    base_nik_without_number = f"P-{year_str}{current_month_str}"
-
-    # Mencari NIK terakhir dari database untuk mendapatkan nomor urut
-    cursor.execute("SELECT nik FROM pegawai WHERE nik LIKE %s ORDER BY nik DESC LIMIT 1", (f"{base_nik_without_number}%",))
+    #Query untuk mendapatkan NIK terakhir dari database
+    cursor.execute("SELECT NIK FROM pegawai ORDER BY NIK DESC LIMIT 1")
     last_nik = cursor.fetchone()
-
-    if last_nik:
-        last_number = int(last_nik[0].split("-")[-1])  # Mengambil nomor urut terakhir
+    
+    if last_nik :
+        #mengambil nomor urut terakhir
+        last_number = int(last_nik[0])
         next_number = last_number + 1
-        # Membuat NIK lengkap dengan nomor urut
-        next_nik = f"P-{str(next_number).zfill(3)}"
-    else:
-        next_number = 1  # Jika belum ada data, mulai dari 1
-        # Membuat NIK lengkap dengan nomor urut
-        next_nik = f"{base_nik_without_number}{str(next_number).zfill(3)}"
+    else :
+        #jika tidak ada data, berarti mulai dari 1
+        next_number = 1
     
-    closeDb()  # untuk menutup koneksi database 
+    #format nomor urut dengan leading zeros (00001, 00002, dst)
+    next_nik = f"{next_number:04}"
     
+    #menutup koneksi database
+    closeDb()
     return next_nik
 
 #fungsi untuk menyimpan lokasi foto
